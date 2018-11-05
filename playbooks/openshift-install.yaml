@@ -2,23 +2,23 @@
 - hosts: localhost
   connection: local
   gather_facts: no 
+  
   tasks:
-    - name: Template Openshift hosts files
-      template:
-        src: hosts.j2
-        dest: "{{ playbook_dir }}/inventory/hosts"
-      run_once: true      
 
-    - local_action: meta
-        refresh_inventory
-
-- import_playbook: subscribe.yml
+#    - name: Template Openshift hosts files
+#      template:
+#        src: hosts.j2
+#        dest: "{{ playbook_dir }}/inventory/hosts"
+#      run_once: true      
+#
+#    - local_action: meta
+#        refresh_inventory
 
 - name: call openshift pre-req play
   import_playbook: "/usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml"
 
 - name: call openshift deploy_cluster play
-  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+  import_playbook: "/usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml"
  
 # opens up node exporter and router stats for prometheus to scrape
 - import_playbook: firewall.yml

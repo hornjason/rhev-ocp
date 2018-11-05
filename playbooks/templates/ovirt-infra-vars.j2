@@ -23,8 +23,9 @@ vms:
         {{ lookup('template', 'templates/cloud_init_node.j2')| indent(8,false) }}
     nics:
       - name: nic1
-        profile_name: "{{ rhv_vm_network }}"
+        profile: "{{ rhv_vm_network }}"
         interface: virtio
+        network: "{{ rhv_vm_network }}"
         #mac_address: 00:1a:4a:16:01:49
 {% endfor %}
  
@@ -41,8 +42,9 @@ vms:
         {{ lookup('template', 'templates/cloud_init_node.j2')| indent(8,false) }}
     nics:
       - name: nic1
-        profile_name: "{{ rhv_vm_network }}"
+        profile: "{{ rhv_vm_network }}"
         interface: virtio
+        network: "{{ rhv_vm_network }}"
         #mac_address: 00:1a:4a:16:01:47
 {% endfor %}
   
@@ -60,8 +62,9 @@ vms:
         {{ lookup('template', 'templates/cloud_init_master.j2')| indent(8,false) }}
     nics:
       - name: nic1
-        profile_name: "{{ rhv_vm_network }}"
+        profile: "{{ rhv_vm_network }}"
         interface: virtio
+        network: "{{ rhv_vm_network }}"
         #mac_address: 00:1a:4a:16:01:45
 {% endfor %}
 
