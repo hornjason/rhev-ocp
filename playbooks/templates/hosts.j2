@@ -172,12 +172,12 @@ openshift_storageclass_default=true
 
 [masters]
 {% for i in range(1, master_nodes +1) %}
-ocp-master-{{ i }}
+master{{ i }}{{ local_hosted_zone }}
 {% endfor %}
 
 [infra]
 {% for i in range(1, infra_nodes +1) %}
-ocp-infra-{{ i }}
+infra{{ i }}{{ local_hosted_zone }}
 {% endfor %}
 
 {% if groups['lb'] is defined %}
@@ -192,13 +192,13 @@ masters
 
 [nodes]
 {% for i in range(1, master_nodes +1) %}
-ocp-master-{{ i }} openshift_node_group_name='node-config-master' openshift_schedulable=true
+master{{ i }}.{{ local_hosted_zone }} openshift_node_group_name='node-config-master' openshift_schedulable=true
 {% endfor %}
 {% for i in range(1, infra_nodes +1) %}
-ocp-infra-{{ i }}  openshift_node_group_name='node-config-infra'
+infra{{ i }}.{{ local_hosted_zone }}  openshift_node_group_name='node-config-infra'
 {% endfor %}
 {% for i in range(1, app_nodes +1) %}
-ocp-app-{{ i }}    openshift_node_group_name='node-config-compute'
+app{{ i }}.{{ local_hosted_zone }}    openshift_node_group_name='node-config-compute'
 {% endfor %}
 
 {% if deploy_ocs | default(true) | bool  and deploy_ocs is defined %}
@@ -210,13 +210,13 @@ ocp-infra-{{ i }} glusterfs_zone={{ i }}  glusterfs_devices='[ "" ]'
 
 [glusterfs]
 {% for i in range(1, infra_nodes +1) %}
-ocp-app-{{ i }} glusterfs_zone={{ i }} glusterfs_devices='[ "" ]'
+app{{ i }}.{{ local_hosted_zone }} glusterfs_zone={{ i }} glusterfs_devices='[ "" ]'
 {% endfor %}
 {% else %}
 [glusterfs_registry]
 [glusterfs]
 {% for i in range(1, infra_nodes +1) %}
-ocp-infra-{{ i }}  glusterfs_zone={{ i }} glusterfs_devices='[ "" ]'
+infra{{ i }}.{{ local_hosted_zone }}  glusterfs_zone={{ i }} glusterfs_devices='[ "" ]'
 {% endfor %}
 {% endif %}
 {% endif %}

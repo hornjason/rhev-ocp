@@ -17,7 +17,7 @@ vms:
     profile:
       {{ node_vm | to_nice_yaml | indent(6,false)  }}
     cloud_init:
-      host_name: "ocp-node0{{ i }}.{{ local_hosted_zone }}"
+      host_name: "node0{{ i }}.{{ local_hosted_zone }}"
       authorized_ssh_keys: "{{ root_ssh_key }}"
       custom_script: |
         {{ lookup('template', 'templates/cloud_init_node.j2')| indent(8,false) }}
@@ -36,7 +36,7 @@ vms:
     profile: 
       {{ infra_vm | to_nice_yaml | indent(6,false)  }}
     cloud_init:
-      host_name: "ocp-infra0{{ i }}.{{ local_hosted_zone }}"
+      host_name: "infra0{{ i }}.{{ local_hosted_zone }}"
       authorized_ssh_keys: "{{ root_ssh_key }}"
       custom_script: |
         {{ lookup('template', 'templates/cloud_init_node.j2')| indent(8,false) }}
@@ -56,7 +56,7 @@ vms:
     tag: openshift_master
     is_master: true
     cloud_init:
-      host_name: "ocp-master0{{ i }}.{{ local_hosted_zone }}"
+      host_name: "master0{{ i }}.{{ local_hosted_zone }}"
       authorized_ssh_keys: "{{ root_ssh_key }}"
       custom_script: |
         {{ lookup('template', 'templates/cloud_init_master.j2')| indent(8,false) }}

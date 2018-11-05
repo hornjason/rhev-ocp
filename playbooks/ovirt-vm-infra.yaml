@@ -86,6 +86,7 @@
     - oVirt.vm-infra
 
   post_tasks:
+
     - name: Logout from oVirt
       ovirt_auth:
         state: absent
