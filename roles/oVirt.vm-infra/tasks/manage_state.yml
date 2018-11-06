@@ -39,5 +39,3 @@
     started_vms: "{{ started_vms|default([]) + [started_vm] }}"
   when: not (started_vm.skipped | default(false))
 
-- pause: 
-    seconds: 60

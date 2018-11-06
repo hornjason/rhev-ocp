@@ -2,17 +2,18 @@
 - hosts: localhost
   connection: local
   gather_facts: no 
-  
+  vars_files:
+    - ../ocp-vars.yml
   tasks:
 
-#    - name: Template Openshift hosts files
-#      template:
-#        src: hosts.j2
-#        dest: "{{ playbook_dir }}/inventory/hosts"
-#      run_once: true      
-#
-#    - local_action: meta
-#        refresh_inventory
+    - name: Template Openshift hosts files
+      template:
+        src: hosts.j2
+        dest: "{{ playbook_dir }}/inventory/hosts"
+      run_once: true      
+
+    - local_action: meta
+        refresh_inventory
 
 - name: call openshift pre-req play
   import_playbook: "/usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml"

@@ -12,12 +12,12 @@ vm_infra_wait_for_ip_retries: {{ vm_infra_wait_for_ip_retries | default('10') }}
 
 vms:
 {% for i in range(1, (app_nodes +1) ) %}
-  - name: ocp-node0{{ i }}
+  - name: ocp-app0{{ i }}.{{ local_hosted_zone }}
     tag: openshift_node
     profile:
       {{ node_vm | to_nice_yaml | indent(6,false)  }}
     cloud_init:
-      host_name: "node0{{ i }}.{{ local_hosted_zone }}"
+      host_name: "app0{{ i }}.{{ local_hosted_zone }}"
       authorized_ssh_keys: "{{ root_ssh_key }}"
       custom_script: |
         {{ lookup('template', 'templates/cloud_init_node.j2')| indent(8,false) }}
@@ -31,7 +31,7 @@ vms:
  
 {% for i in range(1, (infra_nodes +1) ) %}
   # Infra VMs
-  - name: ocp-infra0{{ i }}
+  - name: ocp-infra0{{ i }}.{{ local_hosted_zone }}
     tag: openshift_infra
     profile: 
       {{ infra_vm | to_nice_yaml | indent(6,false)  }}
@@ -50,7 +50,7 @@ vms:
   
 {% for i in range(1, (master_nodes +1) ) %}
   # Master VMs
-  - name: ocp-master0{{ i }}
+  - name: ocp-master0{{ i }}.{{ local_hosted_zone }}
     profile: 
       {{ master_vm | to_nice_yaml| indent(6,false) }}
     tag: openshift_master
@@ -91,7 +91,7 @@ affinity_groups:
     vm_rule: negative
     vms:
 {% for i in range(1, (master_nodes +1) ) %}
-      - ocp-master0{{ i }}
+      - ocp-master0{{ i }}.{{ local_hosted_zone }}
 {% endfor %}
     wait: true
 
@@ -101,7 +101,7 @@ affinity_groups:
     vm_rule: negative
     vms:
 {% for i in range(1, (infra_nodes +1) ) %}
-      - ocp-infra0{{ i }}
+      - ocp-infra0{{ i }}.{{ local_hosted_zone }}
 {% endfor %}
 {% if software_lb is defined and software_lb | bool %}
       - openshift-lb
@@ -114,5 +114,5 @@ affinity_groups:
     vm_rule: negative
     vms:
 {% for i in range(1, (app_nodes +1) ) %}
-      - ocp-node0{{ i }}
+      - ocp-app0{{ i }}.{{ local_hosted_zone }}
 {% endfor %}
