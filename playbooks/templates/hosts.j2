@@ -81,6 +81,7 @@ openshift_hosted_router_replicas={{ infra_nodes }}
 {% if deploy_logging | default('True') | bool %}
 # Logging
 openshift_logging_install_logging=True
+openshift_logging_es_memory_limit={{ logging_es_mem }}
 {% if storage_type == 'dynamic' %}
 openshift_logging_es_pvc_dynamic=True
 openshift_logging_es_pvc_size={{ logging_volume_size }}

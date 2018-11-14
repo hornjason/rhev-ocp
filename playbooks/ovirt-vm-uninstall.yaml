@@ -16,7 +16,7 @@
   gather_facts: false
 
   vars_files:
-    - vars/vars.yml
+    #- vars/vars.yml
     - ../ocp-vars.yml
 
   pre_tasks:

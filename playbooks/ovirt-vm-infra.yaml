@@ -82,7 +82,7 @@
         - always
   
   roles:
-    - oVirt.image-template
+#    - oVirt.image-template
     - oVirt.vm-infra
 
   post_tasks:
