@@ -15,8 +15,7 @@
     - include_vars: 'vars/vm_config_vars.yml'
 
     - name: template ovirt infra
-      template:
-        src: templates/ovirt-infra-vars.j2
+      template: src: templates/ovirt-infra-vars.j2
         dest: vars/vars.yml
 
     - include_vars:
@@ -62,15 +61,6 @@
       tags:
         - ca
 
-        #- name: oVirt infra
-        #  hosts: localhost
-        #  connection: local
-        #  gather_facts: false
-        #
-        #  pre_tasks:
-        #    - include_vars:
-        #        dir: vars/
-        #
     - name: Log in to oVirt
       ovirt_auth:
         url: "{{ engine_url }}"

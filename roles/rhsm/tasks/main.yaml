@@ -36,6 +36,10 @@
       register: subscribed
       ignore_errors: yes
 
+    - debug: var=subscribed
+      when:
+        - "'not registered' in subscribed.stdout"
+    - pause:
     - name: Register system using Red Hat Subscription Manager
       redhat_subscription:
         state: present
@@ -45,9 +49,9 @@
       when:
         - "'not registered' in subscribed.stdout"
         - rhsm_user is defined
-        - rhsm_user|trim != ''
+        - rhsm_user != ''
       register: rhn
-      until: rhn|success
+      until: rhn is success
       retries: 5
 
     - name: Register system using Red Hat Subscription Manager
@@ -59,10 +63,10 @@
         org_id: "{{ rhsm_org_id | default(omit) }}"
       when:
         - "'not registered' in subscribed.stdout"
-        - rhsm_satellite is defined
-        - rhsm_satellite|trim != ''
+        - rhsm_activation_key is defined
+        - rhsm_org_id is defined
       register: rhn
-      until: rhn|success
+      until: rhn is success
       retries: 5
 
     - name: Obtain currently enabled repos
@@ -72,13 +76,13 @@
     - name: Disable repositories that should not be enabled
       shell: "subscription-manager repos --disable={{ item }}"
       with_items:
-        - "{{ enabled_repos.stdout_lines | difference(openshift_required_repos) }}"
+        - "{{ enabled_repos.stdout_lines | difference(required_repos) }}"
       when: provider is not defined
 
     - name: Enable specified repositories not already enabled
       command: "subscription-manager repos --enable={{ item }}"
       with_items:
-        - "{{ openshift_required_repos | difference(enabled_repos.stdout_lines) }}"
+        - "{{ required_repos | difference(enabled_repos.stdout_lines) }}"
 
     - name: Enable satellite tools repo if required
       command: "subscription-manager repos --enable=rhel-7-server-satellite-tools-6.2-rpms"
